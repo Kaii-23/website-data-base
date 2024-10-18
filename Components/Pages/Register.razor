@@ -1,0 +1,91 @@
+﻿@using website2.Services
+@using website2.Models
+@page "/register"
+@rendermode InteractiveServer
+@inject CustomerService CustomerService
+
+
+
+<PageTitle>Register</PageTitle>
+
+<h1>register</h1>
+
+<form>
+    First Name<br />
+    <input type="text"
+        id="firstName"
+        name="firstName" 
+        maxlength="15" 
+        minlength="4" 
+        placeholder="enter First Name" 
+        required 
+        @bind=newCustomer.FirstName><br />
+    <br />
+
+    Last Name<br />
+    <input type="text" 
+        id="LastName" 
+        name="LastName" 
+        maxlength="15" 
+        minlength="4" 
+        placeholder="enter Last Name"
+        required 
+        @bind=newCustomer.FirstName><br />
+    <br />
+
+     username<br />
+    <input type="text"  
+        id="username" 
+        name="username" 
+        maxlength="15" 
+        minlength="4"
+        placeholder="enter username" 
+        required 
+        @bind=newCustomer.Username><br />
+    <br />
+
+    password<br />
+    <input type="password" 
+        id="password"
+        maxlength="20"
+        minlength="6"
+        placeholder="enter password" 
+        required 
+        @bind=newCustomer.Password >
+  
+
+    <br />
+    email<br />
+    <input type="email" 
+        id="email" 
+        name="emails" 
+        placeholder="enter email"><br />
+
+    <button @onclick=@RegisterCustomer class="button">Submit</button>
+</form>
+
+
+
+
+<script>
+    function myFunction() {
+        var x = document.getElementById("password");
+        if (x.type === "password") {
+            x.type = "text";
+        } else {
+            x.type = "password";
+        }
+    }
+
+</script>
+
+
+@code{
+    private Customer newCustomer = new Customer();
+
+    private async Task RegisterCustomer()
+    {
+        await CustomerService.AddCustomerAsync(newCustomer);
+
+    }
+}
