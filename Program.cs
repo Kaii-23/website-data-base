@@ -3,6 +3,7 @@ using website2.Components;
 using website2.Models;
 using website2.Services;
 using MudBlazor.Services;
+using website2.Utilities;
 
 
 namespace website2
@@ -18,6 +19,11 @@ namespace website2
                 .AddInteractiveServerComponents();
 
             builder.Services.AddMudServices();
+
+            builder.Services.AddScoped<CustomerService>();
+            builder.Services.AddScoped<UserSession>();
+            builder.Services.AddSingleton<UserSession>();
+
 
 
             builder.Services.AddDbContext<TlS2301364RzaContext>(options =>
