@@ -1,7 +1,8 @@
-﻿@using website2.Services
+﻿
 @rendermode InteractiveServer
 @page "/login"
 @using website2.Models
+
 @inject website2.Services.CustomerService CustomerService
 @inject NavigationManager NavigationManager
 
@@ -37,6 +38,7 @@
         {
             #region Hidden
             //NavigatonManager.NavigateTo("/account");
+            #endregion
         }
     }
-}
+ }
