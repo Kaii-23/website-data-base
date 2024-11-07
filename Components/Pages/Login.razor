@@ -1,71 +1,42 @@
 ﻿@using website2.Services
+@rendermode InteractiveServer
 @page "/login"
-@using webstie2.Models
-
-@inject website2.Servives.CustomerService CustomerService
+@using website2.Models
+@inject website2.Services.CustomerService CustomerService
 @inject NavigationManager NavigationManager
 
 <PageTitle>Login</PageTitle>
-
-<h3>login</h3>
 
 <EditForm Model="newCustomer" onValidSubmit="HandleValidSubmit" FormName="LoginForm">
     <DataAnnotationsValidator />
     <ValidationSummary />
 
-    <form>
-        First Name<br />
-        <input type="text"
-               id="firstName"
-               name="firstName"
-               maxlength="15"
-               minlength="4"
-               placeholder="enter First Name"
-               required
-               @bind=newCustomer.FirstName><br />
-        <br />
+    <div>
+        <label>Username</label>
+        <InputText @bind-Value="newCustomer.Username" />
 
-        Last Name<br />
-        <input type="text"
-               id="LastName"
-               name="LastName"
-               maxlength="15"
-               minlength="4"
-               placeholder="enter Last Name"
-               required
-               @bind=newCustomer.FirstName><br />
-        <br />
+        <label>Password</label>
+        <InputText @bind-Value="password" type="password"/>
+    </div>
 
-        username<br />
-        <input type="text"
-               id="username"
-               name="username"
-               maxlength="15"
-               minlength="4"
-               placeholder="enter username"
-               required
-               @bind=newCustomer.Username><br />
-        <br />
-
-        password<br />
-        <input type="password"
-               id="password"
-               maxlength="20"
-               minlength="6"
-               placeholder="enter password"
-               required
-               @bind=newCustomer.Password>
-        <br />
-
-
-
-        email<br />
-        <input type="email"
-               id="email"
-               name="emails"
-               placeholder="enter email">
-        <br />
-
-        <button @onclick=@RegisterCustomer class="button">Submit</button>
-    </form>
 </EditForm>
+
+@code {
+    private Customer newCustomer = new Customer();
+    private string password;
+
+    private async Task HandleValidSubmit()
+    {
+        newCustomer.Password = password;
+        newCustomer = await CustomerService.LogIn(newCustomer);
+        if (newCustomer == null)
+        {
+            Console.WriteLine("error");
+        }
+        else
+        {
+            #region Hidden
+            //NavigatonManager.NavigateTo("/account");
+        }
+    }
+}
