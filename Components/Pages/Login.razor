@@ -1,14 +1,14 @@
 ﻿
-@rendermode InteractiveServer
+
 @page "/login"
 @using website2.Models
 
 @inject website2.Services.CustomerService CustomerService
 @inject NavigationManager NavigationManager
-
+@rendermode InteractiveServer
 <PageTitle>Login</PageTitle>
 
-<EditForm Model="newCustomer" onValidSubmit="HandleValidSubmit" FormName="LoginForm">
+<EditForm Model="newCustomer" OnValidSubmit="HandleValidSubmit" FormName="LoginForm">
     <DataAnnotationsValidator />
     <ValidationSummary />
 
@@ -18,8 +18,9 @@
 
         <label>Password</label>
         <InputText @bind-Value="password" type="password"/>
-    </div>
 
+        <button type="submit">register</button>
+    </div>
 </EditForm>
 
 @code {

@@ -30,7 +30,7 @@
         minlength="4" 
         placeholder="enter Last Name"
         required 
-        @bind=newCustomer.FirstName><br />
+        @bind=newCustomer.LastName><br />
     <br />
 
      username<br />
@@ -88,6 +88,7 @@
     private async Task RegisterCustomer()
     {
         await CustomerService.AddCustomerAsync(newCustomer);
+
 
     }
 }
