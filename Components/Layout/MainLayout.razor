@@ -7,47 +7,14 @@
 <div class="page">
 
     <main>
-@*         <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
-        </div>  *@
-        <MudPaper Elevation="25" Class="justify-space-between">
-            <MudToolBar Class="justify-space-between">
-                <MudButton Href="/"
-                           Variant="Variant.Filled"
-                           Color="Color.Primary">
-                    Home
-                </MudButton>
-                <MudButton Href="/"
-                           Variant="Variant.Filled"
-                           Color="Color.Primary">
-                    Search
-                </MudButton>
-                <MudSpacer />
-                <MudButton Href="https://localhost:7031/Login"
-                           Variant="Variant.Filled"
-                           Color="Color.Primary">
-                    Our Zoo
-                </MudButton>
-                <MudButton Href="https://localhost:7031/Login"
-                           Variant="Variant.Filled"
-                           Color="Color.Primary">
-                    Our Hotel
-                </MudButton>
-                <MudSpacer />
-                <MudButton Href="/Login"
-                           Variant="Variant.Filled"
-                           Color="Color.Primary">
-                    Login
-                </MudButton>
-                <MudButton Href="https://localhost:7031/Login"
-                           Target="_blank"
-                           Variant="Variant.Filled"
-                           Color="Color.Primary">
-                    Settings
-                </MudButton>
-
-            </MudToolBar>
-        </MudPaper>
+         <div class="top-row px-4">
+            <a href="/Login" target="_self" id="loginBtn">Login</a>
+            <a href="/tickets" target="_self" id="loginBtn">Tickets</a>
+            <form action="/">
+                <input type="submit" value="Home" class="HomeBtn" />
+            </form>
+        </div>  
+        
 
 
 

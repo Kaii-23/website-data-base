@@ -23,6 +23,7 @@ namespace website2
             builder.Services.AddScoped<CustomerService>();
             builder.Services.AddScoped<UserSession>();
             builder.Services.AddSingleton<UserSession>();
+            builder.Services.AddScoped<AttractionService>();
 
 
 
