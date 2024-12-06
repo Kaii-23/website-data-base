@@ -1,13 +1,12 @@
-﻿using RZA_sly.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using website2.Models;
 
-namespace RZA_sly.Services
+namespace website2.Services
 {
     public class RoomService
     {
-        private readonly TlSlyRzaContext _context;
-        public RoomService(TlSlyRzaContext context)
+        private readonly TlS2301364RzaContext _context;
+        public RoomService(TlS2301364RzaContext context)
         {
             _context = context;
         }

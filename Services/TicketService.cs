@@ -2,7 +2,7 @@
 using website2.Models;
 namespace website2.Services
 
-{{
+{
     public class TicketService
     {
         private readonly TlS2301364RzaContext _context;
@@ -19,7 +19,5 @@ namespace website2.Services
             await _context.Tickets.AddAsync(newTicket);
             await _context.SaveChangesAsync();
         }
-    }
-}
     }
 }
