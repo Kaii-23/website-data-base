@@ -2,12 +2,14 @@
 @using website2.Services
 @using website2.Utilities
 @inject AttractionService AttractionService
-@rendermode InteractiveServer
-@inject UserSession UserSession 
-@page "/tickets"
+@inject UserSession UserSession
+@inject NavigationManager NavigationManager
 @inject TicketbookingService TicketbookingService
 @inject TicketService TicketService
-@inject NavigationManager NavigationManager
+
+@rendermode InteractiveServer
+
+@page "/tickets"
 
 <h3>Tickets</h3>
 
@@ -49,7 +51,7 @@ else
     {
         if (UserSession.UserId == 0)
         {
-            NavigationManager.NavigateTo("/");
+            NavigationManager.NavigateTo("/login");
         }
         else
         {

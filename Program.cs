@@ -29,6 +29,11 @@ namespace website2
             builder.Services.AddScoped<UserSession>();
             builder.Services.AddSingleton<UserSession>();
             builder.Services.AddScoped<AttractionService>();
+            builder.Services.AddScoped<RoomService>();
+            builder.Services.AddScoped<RoombookingService>();
+            builder.Services.AddScoped<TicketService>();
+            builder.Services.AddScoped<TicketbookingService>();
+
 
 
 

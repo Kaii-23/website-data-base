@@ -1,5 +1,6 @@
 ﻿@using website2.Services
 @using website2.Models
+@using website2.Utilities
 @page "/register"
 @rendermode InteractiveServer
 @inject CustomerService CustomerService
@@ -10,39 +11,50 @@
 
 <h1>register</h1>
 
-<form>
-    First Name<br />
-    <input type="text"
-        id="firstName"
-        name="firstName" 
-        maxlength="15" 
-        minlength="4" 
-        placeholder="enter First Name" 
-        required 
-        @bind=newCustomer.FirstName><br />
-    <br />
 
-    Last Name<br />
-    <input type="text" 
-        id="LastName" 
-        name="LastName" 
-        maxlength="15" 
-        minlength="4" 
-        placeholder="enter Last Name"
-        required 
-        @bind=newCustomer.LastName><br />
-    <br />
+<div class="container">
+    <form>
+        <p class="personalDetails">Personal details</p>
+        <input type="text"
+            id="firstName"
+            class="firstName" 
+            maxlength="15" 
+            minlength="4" 
+            placeholder="enter First Name" 
+            required 
+            @bind=newCustomer.FirstName>
 
-     username<br />
-    <input type="text"  
-        id="username" 
-        name="username" 
-        maxlength="15" 
-        minlength="4"
-        placeholder="enter username" 
-        required 
-        @bind=newCustomer.Username><br />
-    <br />
+        <input type="text"
+               id="LastName"
+               class="LastName"
+               maxlength="15"
+               minlength="4"
+               placeholder="enter Last Name"
+               required
+               @bind=newCustomer.LastName>
+
+@*         <input type="text"
+               id="PhoneNum"
+               class="PhoneNum"
+               maxlength="15"
+               minlength="4"
+               placeholder="enter Phone Number"
+               required
+               @bind=newCustomer.PhoneNumber>
+
+        <input type="text"
+               id="DoB"
+               name="dateOfBirth"
+               maxlength="15"
+               minlength="4"
+               placeholder="enter Date of birth"
+               required
+               @bind=newCustomer.DateOfBirth><br /> *@
+    </form>
+</div>
+
+
+@* <form>
 
     password<br />
     <input type="password" 
@@ -64,7 +76,7 @@
         <br />
 
 </form>
-<button @onclick=@RegisterCustomer class="button">Submit</button>
+<button @onclick=@RegisterCustomer class="button">Submit</button> *@
 
 <div id="blazor-error-ui">
     Error. This username already exists, please try a different one.
@@ -90,9 +102,70 @@
 
     private async Task RegisterCustomer()
     {
+        newCustomer.Password = PasswordUtils.HashPassword(newCustomer.Password);
         await CustomerService.AddCustomerAsync(newCustomer);
 
 
     }
 }
 
+
+<style>
+    .container {
+        padding: 20px;
+        width: 90%; /* Makes content box smaller */
+        max-width: 1000px; /* Maximum width of the content box */
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+
+    input[type=text], select {
+        width: 25%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    input[type=password], select {
+        width: 25%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    .btn {
+        width: 25%;
+        background-color: #4CAF50;
+        color: white;
+        padding: 14px 20px;
+        margin: 8px 0;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+        .btn:hover {
+            background-color: #45a049;
+        }
+
+    .personalDetails{
+        position:relative;
+        color:black;
+        left: -43%;
+        
+    }
+
+    .firstName.lastName{
+        position: relative;
+        left: -24%;
+    }
+
+
+</style>

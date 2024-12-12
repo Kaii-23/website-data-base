@@ -1,5 +1,4 @@
 ﻿@inherits LayoutComponentBase
-@using MudBlazor
 @inject NavigationManager _nav
 @inject NavigationManager NavigationManager
 
@@ -8,11 +7,11 @@
 
     <main>
          <div class="top-row px-4">
-            <a href="/Login" target="_self" id="loginBtn">Login</a>
-            <a href="/register" target="_self" id="loginBtn">Register</a>
+            <a href="/Login" target="_self" id="loginBtn">Your account</a>
             <form action="/">
                 <input type="submit" value="Home" class="HomeBtn" />
             </form>
+            <a href="/tickets" target="_self" id="BookBtn">Book now</a>
         </div>  
         
 

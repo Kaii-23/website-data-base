@@ -16,4 +16,5 @@ public partial class Roombooking
     public virtual Customer Customer { get; set; } = null!;
 
     public virtual Room RoomNumberNavigation { get; set; } = null!;
+    public Room Room { get; internal set; }
 }

@@ -104,6 +104,13 @@ main {
     position: relative;
 }
 
+
+.bookBtn {
+    color: red;
+    right: 400px;
+    position: relative;
+}
+
 .TicketBtn {
     color: red;
     right: 180px;

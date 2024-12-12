@@ -1,29 +1,31 @@
 ﻿
-@page "/account"﻿
-
-
 @using website2.Utilities
 @using website2.Services
 @using website2.Models
 @inject UserSession UserSession
 @inject RoomService RoomService
-@* @inject RoombookingService RoombookingService  *@
+@inject RoombookingService RoombookingService
 @inject CustomerService CustomerService
 @inject NavigationManager NavigationManager
 
 @rendermode InteractiveServer
 
+@page "/account"
 
 <h3>Account</h3>
 
 <button @onclick="ShowUserId">Show User ID</button>
+<br />
 
 @if (customer != null)
+
 {
-    <li>@customer.FirstName @customer.LastName</li>
+    <br />
+    <a>Hello, @customer.FirstName @customer.LastName</a>
+    <br />
 }
 
-@if (rooms != null)
+@* @if (rooms != null)
 {
     <ul>
         @foreach (var room in rooms)
@@ -40,7 +42,7 @@
             @foreach (var room in rooms)
             {
                 <option value=@room.RoomNumber>@room.RoomType</option>
-
+            
             }
         </select>
     }
@@ -52,11 +54,17 @@
         }
     </select>
     <button @onclick=BookRoom>Book this room</button>
-</div>
+ </div>*@
+
+<br />
+
+<a href="/bookings">My Bookings</a>
+
+<br />
 
 <button @onclick=Logout>Log Out</button>
 
-<a href="/bookings">My Bookings</a>
+
 
 @code {
     private Customer customer;

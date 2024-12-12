@@ -1,40 +1,55 @@
-﻿
-
-@page "/login"
+﻿@page "/login"
 @using website2.Models
 @using website2.Utilities
 @using website2.Services
-@using MudBlazor
-@rendermode InteractiveServer
 @inject NavigationManager NavigationManager
 @inject UserSession UserSession
 @inject CustomerService CustomerService
 
+@rendermode InteractiveServer
 
-@inject website2.Services.CustomerService CustomerService
+<PageTitle>Log in</PageTitle>
 
-<h3>Log In</h3>
 
-<EditForm Model="newCustomer" OnValidSubmit="HandleValidSubmit" FormName="LoginForm">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
 
-    <div>
-        <label>Username:</label>
-        <InputText @bind-Value="newCustomer.Username" />
+<div class="container">
+  <div>
+    <label>Username</label>
+    <br />
+    <InputText 
+        type="text"
+        id="username"
+        name="username"
+        placeholder="enter username"
+        @bind-value="newCustomer.Username" />
+
+    <br />
+
+    <label>Password</label>
+    <br />
+    <InputText type="password"
+        id="password"
+        name="password"
+        placeholder="enter password"
+        @bind-value="password" />
+
+    <br />
+
+    <button @onclick="@HandleValidSubmit" class="btn">Log In</button>
+
+    <br />
+    <br />
+
+    <a href="/register" target="_self">Dont have an account? Sign up here</a>
+
+
     </div>
-
-    <div>
-        <label>Password:</label>
-        <InputText @bind-Value="password" type="password" />
-    </div>
-
-    <button type="submit">Register</button>
-</EditForm>
+</div>
 
 @code {
     private Customer newCustomer = new Customer();
     private string password;
+
 
     #region Hidden
     protected override async Task OnInitializedAsync()
@@ -46,18 +61,92 @@
     }
     #endregion
 
+
+
     private async Task HandleValidSubmit()
     {
+        if (string.IsNullOrEmpty(password))
+        {
+            Console.WriteLine("Password is empty");
+            return;
+        }
+
         newCustomer.Password = PasswordUtils.HashPassword(password);
-        newCustomer = await CustomerService.LogIn(newCustomer);
+
         if (newCustomer == null)
         {
-            Console.WriteLine("could not log in");
+            Console.WriteLine("newCustomer is null before login");
+            return;
         }
-        else
+
+        var customer = await CustomerService.LogIn(newCustomer);
+
+        if (customer == null)
         {
-            UserSession.UserId = newCustomer.CustomerId;
-            NavigationManager.NavigateTo("/account");
+            Console.WriteLine("Log in failed. Customer is null.");
+            return;
         }
+
+        UserSession.UserId = customer.CustomerId;
+        NavigationManager.NavigateTo("/account");
     }
+
+
 }
+
+<style>
+    .container {
+        padding: 20px;
+        width: 80%; /* Makes content box smaller */
+        max-width: 600px; /* Maximum width of the content box */
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+
+    footer {
+        background-color: #333;
+        color: white;
+        text-align: center;
+        padding: 20px;
+        margin-top: 20px;
+        border-radius: 10px;
+    }
+
+    input[type=text], select {
+        width: 25%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    input[type=password], select {
+        width: 25%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    .btn {
+        width: 25%;
+        background-color: #4CAF50;
+        color: white;
+        padding: 14px 20px;
+        margin: 8px 0;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .btn:hover {
+        background-color: #45a049;
+    }
+
+</style>
+
