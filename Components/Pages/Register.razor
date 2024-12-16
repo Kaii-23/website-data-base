@@ -14,69 +14,90 @@
 
 <div class="container">
     <form>
-        <p class="personalDetails">Personal details</p>
-        <input type="text"
+        
+        <span class="personalDetails">Personal details</span>
+        <span class="Accountinfo">Account information</span>
+        <br />
+
+        <InputText type="text"
             id="firstName"
             class="firstName" 
             maxlength="15" 
             minlength="4" 
-            placeholder="enter First Name" 
+            placeholder="First Name" 
             required 
-            @bind=newCustomer.FirstName>
+            @bind-value="newCustomer.FirstName"></InputText>
 
-        <input type="text"
+        <InputText type="text"
                id="LastName"
-               class="LastName"
+               class="lastName"
                maxlength="15"
                minlength="4"
-               placeholder="enter Last Name"
+               placeholder="Last Name"
                required
-               @bind=newCustomer.LastName>
+               @bind-value="newCustomer.LastName"></InputText>
+               
+        <InputText type="text"
+               id="Username"
+               class="Username"
+               maxlength="15"
+               minlength="4"
+               placeholder="Username"
+               required
+               @bind-value="newCustomer.Username"></InputText>
 
-@*         <input type="text"
-               id="PhoneNum"
-               class="PhoneNum"
+        <InputText type="password"
+               id="Password"
+               class="password"
                maxlength="15"
                minlength="4"
-               placeholder="enter Phone Number"
+               placeholder="Password"
                required
-               @bind=newCustomer.PhoneNumber>
+             @bind-value="newCustomer.Password"></InputText><br />
 
-        <input type="text"
-               id="DoB"
-               name="dateOfBirth"
+        <InputText type="text"
+               id="phoneNum"
+               class="phoneNum"
                maxlength="15"
                minlength="4"
-               placeholder="enter Date of birth"
+               placeholder="Phone Number"
                required
-               @bind=newCustomer.DateOfBirth><br /> *@
+              @bind-value="newCustomer.PhoneNumber"></InputText>
+
+         <InputText type="text"
+               id="postCode"
+               class="postCode"
+               maxlength="15"
+               minlength="4"
+               placeholder="post Code"
+               required
+                @bind-value="newCustomer.Postcode"></InputText> 
+
+
+        <InputText type="email"
+               id="email"
+               class="email"
+               maxlength="30"
+               minlength="4"
+               placeholder="Email address"
+               required
+              @bind-value="newCustomer.Email"></InputText><br />
+
+
+
     </form>
+    <div class="alert" style="display:@(showError ? "block" : "none")">
+        <span class="closebtn" @onclick="CloseError">&times;</span>
+        @errorMessage
+    </div>
+    <div class="alert alert-success" style="display:@(showSuccess ? "block" : "none")">
+        <span class="closebtn" @onclick="CloseSuccess">&times;</span>
+        @successMessage
+    </div>
 </div>
 
+<input type="submit" @onclick=@RegisterCustomer class="btn">Submit</input>
 
-@* <form>
-
-    password<br />
-    <input type="password" 
-        id="password"
-        maxlength="20"
-        minlength="6"
-        placeholder="enter password" 
-        required 
-        @bind=newCustomer.Password >
-    <br />
-
-
-
-    email<br />
-    <input type="email" 
-        id="email" 
-        name="emails" 
-        placeholder="enter email">
-        <br />
-
-</form>
-<button @onclick=@RegisterCustomer class="button">Submit</button> *@
 
 <div id="blazor-error-ui">
     Error. This username already exists, please try a different one.
@@ -94,34 +115,184 @@
         }
     }
 
+        // Get all elements with class="closebtn"
+    var close = document.getElementsByClassName("closebtn");
+    var i;
+
+    // Loop through all close buttons
+    for (i = 0; i < close.length; i++) {
+      // When someone clicks on a close button
+      close[i].onclick = function(){
+
+        // Get the parent of <span class="closebtn"> (<div class="alert">)
+        var div = this.parentElement;
+
+        // Set the opacity of div to 0 (transparent)
+        div.style.opacity = "0";
+
+        // Hide the div after 600ms (the same amount of milliseconds it takes to fade out)
+        setTimeout(function(){ div.style.display = "none"; }, 600);
+      }
+    }
+
 </script>
 
 
 @code{
     private Customer newCustomer = new Customer();
+    private bool showError = false;
+    private string errorMessage = "";
+    private bool showSuccess = false;
+    private string successMessage = "";
+
 
     private async Task RegisterCustomer()
     {
-        newCustomer.Password = PasswordUtils.HashPassword(newCustomer.Password);
-        await CustomerService.AddCustomerAsync(newCustomer);
+        // // Check if any required field is empty
+        // if (string.IsNullOrEmpty(newCustomer.FirstName) ||
+        //     string.IsNullOrEmpty(newCustomer.LastName) ||
+        //     string.IsNullOrEmpty(newCustomer.Username) ||
+        //     string.IsNullOrEmpty(newCustomer.Password) ||
+        //     string.IsNullOrEmpty(newCustomer.PhoneNumber) ||
+        //     string.IsNullOrEmpty(newCustomer.Postcode) ||
+        //     string.IsNullOrEmpty(newCustomer.Email))
+        // {
+        //     showError = true;
+        //     errorMessage = "Please fill in all required fields.";
+        //     StateHasChanged();  // Re-render the component to show the error message
+        //     return;  // Prevent form submission
+        // }
+
+        if (string.IsNullOrEmpty(newCustomer.FirstName))
+        {
+            showError = true;
+            errorMessage = "Please enter a first name.";
+            StateHasChanged();  // Re-render the component to show the error message
+            return;  // Prevent form submission
+        }
+        else if (string.IsNullOrEmpty(newCustomer.LastName))
+        {
+            showError = true;
+            errorMessage = "Please enter a last name.";
+            StateHasChanged();  // Re-render the component to show the error message
+            return;  // Prevent form submission
+        }
+        else if (string.IsNullOrEmpty(newCustomer.Username))
+        {
+            showError = true;
+            errorMessage = "Please enter a username.";
+            StateHasChanged();  // Re-render the component to show the error message
+            return;  // Prevent form submission
+        }
+        else if (string.IsNullOrEmpty(newCustomer.Password))
+        {
+            showError = true;
+            errorMessage = "Please enter a password.";
+            StateHasChanged();  // Re-render the component to show the error message
+            return;  // Prevent form submission
+        }
+        else if (string.IsNullOrEmpty(newCustomer.PhoneNumber))
+        {
+            showError = true;
+            errorMessage = "Please enter a Phone Number.";
+            StateHasChanged();  // Re-render the component to show the error message
+            return;  // Prevent form submission
+        }
+        else if (string.IsNullOrEmpty(newCustomer.Postcode))
+        {
+            showError = true;
+            errorMessage = "Please enter a post code.";
+            StateHasChanged();  // Re-render the component to show the error message
+            return;  // Prevent form submission
+        }
+        else if (string.IsNullOrEmpty(newCustomer.Email))
+        {
+            showError = true;
+            errorMessage = "Please enter an email address.";
+            StateHasChanged();  // Re-render the component to show the error message
+            return;  // Prevent form submission
+        }
 
 
+
+        try
+        {
+            // Simulate validation for username
+            bool isUsernameExists = await CustomerService.DoesUsernameExistsAsync(newCustomer.Username);
+            if (isUsernameExists)
+            {
+                showError = true;
+                errorMessage = "This username already exists, please try a different one.";
+                StateHasChanged();
+                return;
+            }
+
+            // Hash password and proceed with registration
+            newCustomer.Password = PasswordUtils.HashPassword(newCustomer.Password);
+            await CustomerService.AddCustomerAsync(newCustomer);
+
+            // Display success message
+            showSuccess = true;
+            successMessage = "Your account has been successfully registered!";
+            StateHasChanged();  // Trigger re-render to show the success messa
+
+        }
+        catch (Exception ex)
+        {
+            showError = true;
+            errorMessage = "An error occurred: " + ex.Message;
+            StateHasChanged();
+        }
     }
+    
+    private void CloseError()
+    {
+        showError = false;
+        StateHasChanged();  // Forces a re-render after closing
+    }
+
+    private void CloseSuccess()
+    {
+        showError = false;
+        StateHasChanged();  // Forces a re-render after closing
+    }
+
 }
 
 
 <style>
     .container {
         padding: 20px;
-        width: 90%; /* Makes content box smaller */
+        width: 100%; /* Makes content box smaller */
         max-width: 1000px; /* Maximum width of the content box */
+        height: 60%;
         border-radius: 8px;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         text-align: center;
     }
 
     input[type=text], select {
-        width: 25%;
+        width: 20%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    input[type=tel], select {
+        width: 20%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    input[type=email], select {
+        width: 20%;
         padding: 12px 20px;
         margin: 8px 0;
         display: inline-block;
@@ -131,7 +302,7 @@
     }
 
     input[type=password], select {
-        width: 25%;
+        width: 20%;
         padding: 12px 20px;
         margin: 8px 0;
         display: inline-block;
@@ -158,14 +329,92 @@
     .personalDetails{
         position:relative;
         color:black;
-        left: -43%;
+        left: -36%;
+        justify-content: space-between;
         
     }
 
-    .firstName.lastName{
+
+    .Accountinfo {
         position: relative;
-        left: -24%;
+        color: black;
+        left: -2%;
+        justify-content: space-between;
     }
 
+    .A {
+        position: relative;
+        color: black;
+        left: -43%;
+    }
+
+    .firstName{
+        position: relative;
+        left: -9%;
+        justify-content: space-between;
+    }
+
+    .lastName{
+        position: relative;
+        left: -8%;
+        justify-content: space-between;
+    }
+
+    .phoneNum {
+        position: relative;
+        left: -20%;
+    }
+
+    .postCode {
+        position: relative;
+        left: -19%;
+    }
+
+    .Username {
+        position: relative;
+        left: -4%;
+        justify-content: space-between;
+    }
+
+    .password {
+        position: relative;
+        left: -3%;
+        justify-content: space-between;
+    }
+
+    .email {
+        position: relative;
+        left: -14%;
+    }
+
+    .alert {
+        padding: 20px;
+        background-color: #f44336; /* Red */
+        color: white;
+        margin-bottom: 15px;
+    }
+
+    .alert-success {
+        padding: 20px;
+        background-color: #4CAF50; /* Red */
+        color: white;
+        margin-bottom: 15px;
+    }
+    /* The close button */
+    .closebtn {
+        margin-left: 15px;
+        color: white;
+        font-weight: bold;
+        float: right;
+        font-size: 22px;
+        line-height: 20px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+        /* When moving the mouse over the close button */
+        .closebtn:hover {
+            color: black;
+        }
 
 </style>

@@ -34,6 +34,12 @@ namespace website2.Services
                 await _context.SaveChangesAsync();
             }
         }
+
+        public async Task<bool> DoesUsernameExistsAsync(string username)
+        {
+            var result = await _context.Customers.FirstOrDefaultAsync(c => c.Username == username);
+            return result != null;
+        }
         #region hidden
         public async Task<List<Customer>> GetCustomersAsync()
         {
