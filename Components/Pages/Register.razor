@@ -4,6 +4,7 @@
 @page "/register"
 @rendermode InteractiveServer
 @inject CustomerService CustomerService
+@inject NavigationManager NavigationManager
 
 
 
@@ -14,74 +15,74 @@
 
 <div class="container">
     <form>
-        
+
         <span class="personalDetails">Personal details</span>
         <span class="Accountinfo">Account information</span>
         <br />
 
         <InputText type="text"
-            id="firstName"
-            class="firstName" 
-            maxlength="15" 
-            minlength="4" 
-            placeholder="First Name" 
-            required 
-            @bind-value="newCustomer.FirstName"></InputText>
+        id="firstName"
+        class="firstName" 
+        maxlength="15" 
+        minlength="4" 
+        placeholder="First Name" 
+        required 
+        @bind-value="newCustomer.FirstName"></InputText>
 
         <InputText type="text"
-               id="LastName"
-               class="lastName"
-               maxlength="15"
-               minlength="4"
-               placeholder="Last Name"
-               required
-               @bind-value="newCustomer.LastName"></InputText>
-               
+        id="LastName"
+        class="lastName"
+        maxlength="15"
+        minlength="4"
+        placeholder="Last Name"
+        required
+        @bind-value="newCustomer.LastName"></InputText>
+
         <InputText type="text"
-               id="Username"
-               class="Username"
-               maxlength="15"
-               minlength="4"
-               placeholder="Username"
-               required
-               @bind-value="newCustomer.Username"></InputText>
+        id="Username"
+        class="Username"
+        maxlength="15"
+        minlength="4"
+        placeholder="Username"
+        required
+        @bind-value="newCustomer.Username"></InputText>
 
         <InputText type="password"
-               id="Password"
-               class="password"
-               maxlength="15"
-               minlength="4"
-               placeholder="Password"
-               required
-             @bind-value="newCustomer.Password"></InputText><br />
+        id="Password"
+        class="password"
+        maxlength="15"
+        minlength="4"
+        placeholder="Password"
+        required
+        @bind-value="newCustomer.Password"></InputText><br />
 
         <InputText type="text"
-               id="phoneNum"
-               class="phoneNum"
-               maxlength="15"
-               minlength="4"
-               placeholder="Phone Number"
-               required
-              @bind-value="newCustomer.PhoneNumber"></InputText>
+        id="phoneNum"
+        class="phoneNum"
+        maxlength="15"
+        minlength="4"
+        placeholder="Phone Number"
+        required
+        @bind-value="newCustomer.PhoneNumber"></InputText>
 
-         <InputText type="text"
-               id="postCode"
-               class="postCode"
-               maxlength="15"
-               minlength="4"
-               placeholder="post Code"
-               required
-                @bind-value="newCustomer.Postcode"></InputText> 
+        <InputText type="text"
+        id="postCode"
+        class="postCode"
+        maxlength="15"
+        minlength="4"
+        placeholder="post Code"
+        required
+        @bind-value="newCustomer.Postcode"></InputText> 
 
 
         <InputText type="email"
-               id="email"
-               class="email"
-               maxlength="30"
-               minlength="4"
-               placeholder="Email address"
-               required
-              @bind-value="newCustomer.Email"></InputText><br />
+        id="email"
+        class="email"
+        maxlength="30"
+        minlength="4"
+        placeholder="Email address"
+        required
+        @bind-value="newCustomer.Email"></InputText><br />
 
 
 
@@ -107,32 +108,32 @@
 
 <script>
     function myFunction() {
-        var x = document.getElementById("password");
-        if (x.type === "password") {
-            x.type = "text";
-        } else {
-            x.type = "password";
-        }
+    var x = document.getElementById("password");
+    if (x.type === "password") {
+    x.type = "text";
+    } else {
+    x.type = "password";
+    }
     }
 
-        // Get all elements with class="closebtn"
+    // Get all elements with class="closebtn"
     var close = document.getElementsByClassName("closebtn");
     var i;
 
     // Loop through all close buttons
     for (i = 0; i < close.length; i++) {
-      // When someone clicks on a close button
-      close[i].onclick = function(){
+    // When someone clicks on a close button
+    close[i].onclick = function(){
 
-        // Get the parent of <span class="closebtn"> (<div class="alert">)
-        var div = this.parentElement;
+    // Get the parent of <span class="closebtn"> (<div class="alert">)
+    var div = this.parentElement;
 
-        // Set the opacity of div to 0 (transparent)
-        div.style.opacity = "0";
+    // Set the opacity of div to 0 (transparent)
+    div.style.opacity = "0";
 
-        // Hide the div after 600ms (the same amount of milliseconds it takes to fade out)
-        setTimeout(function(){ div.style.display = "none"; }, 600);
-      }
+    // Hide the div after 600ms (the same amount of milliseconds it takes to fade out)
+    setTimeout(function(){ div.style.display = "none"; }, 600);
+    }
     }
 
 </script>
@@ -144,6 +145,34 @@
     private string errorMessage = "";
     private bool showSuccess = false;
     private string successMessage = "";
+
+
+    private bool IsValidPhoneNumber(string phoneNumber)
+    {
+        // Simple regex for 10-digit phone numbers
+        var regex = new System.Text.RegularExpressions.Regex(@"^\d{10}$");
+        return regex.IsMatch(phoneNumber);
+    }
+
+    private bool IsValidPostcode(string postcode)
+    {
+        // Example regex for UK postcodes
+        var regex = new System.Text.RegularExpressions.Regex(@"^[A-Z]{1,2}\d[A-Z\d]? \d[A-Z]{2}$");
+        return regex.IsMatch(postcode);
+    }
+
+    private bool IsValidEmail(string email)
+    {
+        try
+        {
+            var addr = new System.Net.Mail.MailAddress(email);
+            return addr.Address == email; // This checks if the email is valid.
+        }
+        catch
+        {
+            return false;
+        }
+    }
 
 
     private async Task RegisterCustomer()
@@ -213,6 +242,30 @@
             return;  // Prevent form submission
         }
 
+        if (string.IsNullOrEmpty(newCustomer.PhoneNumber) || !IsValidPhoneNumber(newCustomer.PhoneNumber))
+        {
+            showError = true;
+            errorMessage = "Please enter a valid phone number (10 digits: e.g. 0000000000).";
+            StateHasChanged();
+            return;
+        }
+
+        if (string.IsNullOrEmpty(newCustomer.Postcode) || !IsValidPostcode(newCustomer.Postcode))
+        {
+            showError = true;
+            errorMessage = "Please enter a valid postcode (e.g., SW1A 1AA).";
+            StateHasChanged();
+            return;
+        }
+
+        if (string.IsNullOrEmpty(newCustomer.Email) || !IsValidEmail(newCustomer.Email))
+        {
+            showError = true;
+            errorMessage = "Please enter a valid email address.";
+            StateHasChanged();
+            return;
+        }
+
 
 
         try
@@ -233,14 +286,19 @@
 
             // Display success message
             showSuccess = true;
-            successMessage = "Your account has been successfully registered!";
+            successMessage = "Your account has been successfully registered! Closing this will return to the log in page.";
             StateHasChanged();  // Trigger re-render to show the success messa
 
         }
         catch (Exception ex)
         {
             showError = true;
+            
             errorMessage = "An error occurred: " + ex.Message;
+            if (errorMessage == "An error occurred: An error occurred while saving the entity changes. See the inner exception for details.")
+            {
+                errorMessage = "An error occurred: Please re-enter your details";
+            }
             StateHasChanged();
         }
     }
@@ -255,6 +313,8 @@
     {
         showError = false;
         StateHasChanged();  // Forces a re-render after closing
+        NavigationManager.NavigateTo("/login");
+
     }
 
 }
@@ -312,7 +372,7 @@
     }
 
     .btn {
-        width: 25%;
+        width: 20%;
         background-color: #4CAF50;
         color: white;
         padding: 14px 20px;
@@ -320,6 +380,8 @@
         border: none;
         border-radius: 4px;
         cursor: pointer;
+        position: relative;
+        left: 40% ;
     }
 
         .btn:hover {
@@ -362,12 +424,12 @@
 
     .phoneNum {
         position: relative;
-        left: -20%;
+        left: -19.5%;
     }
 
     .postCode {
         position: relative;
-        left: -19%;
+        left: -18.5%;
     }
 
     .Username {

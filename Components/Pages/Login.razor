@@ -34,6 +34,10 @@
         @bind-value="password" />
 
     <br />
+        <div class="alert" style="display:@(showError ? "block" : "none")">
+            <span class="closebtn" @onclick="CloseError">&times;</span>
+            @errorMessage
+        </div>
 
     <button @onclick="@HandleValidSubmit" class="btn">Log In</button>
 
@@ -45,6 +49,28 @@
 
     </div>
 </div>
+
+<script>
+     // Get all elements with class="closebtn"
+    var close = document.getElementsByClassName("closebtn");
+    var i;
+
+    // Loop through all close buttons
+    for (i = 0; i < close.length; i++) {
+    // When someone clicks on a close button
+    close[i].onclick = function(){
+
+    // Get the parent of <span class="closebtn"> (<div class="alert">)
+    var div = this.parentElement;
+
+    // Set the opacity of div to 0 (transparent)
+    div.style.opacity = "0";
+
+    // Hide the div after 600ms (the same amount of milliseconds it takes to fade out)
+    setTimeout(function(){ div.style.display = "none"; }, 600);
+    }
+    }
+</script>
 
 @code {
     private Customer newCustomer = new Customer();
@@ -89,8 +115,22 @@
 
         UserSession.UserId = customer.CustomerId;
         NavigationManager.NavigateTo("/account");
-    }
 
+        if (string.IsNullOrEmpty(newCustomer.Username))
+        {
+            showError = true;
+            errorMessage = "Please enter a first name.";
+            StateHasChanged();  // Re-render the component to show the error message
+            return;  // Prevent form submission
+        }
+        else if (string.IsNullOrEmpty(newCustomer.Password))
+        {
+            showError = true;
+            errorMessage = "Please enter a Password.";
+            StateHasChanged();  // Re-render the component to show the error message
+            return;  // Prevent form submission
+        }
+    }
 
 }
 
