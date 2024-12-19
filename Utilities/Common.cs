@@ -67,5 +67,6 @@ namespace website2.Utilities
     public class UserSession
     {
         public int UserId { get; set; }
+        public string StringPassword { get; set; }
     }
 }

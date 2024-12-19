@@ -35,6 +35,39 @@
 
             <div id="containerchangepass" class="containerchangepass">
                 <h1> change your password</h1><br />
+                <br />
+
+
+                <span class="oldpass">old password</span>
+                <br />
+                <input type="text" @bind-value=@oldPassword />
+                <br />
+                <br />
+
+                <span class="newpass">new password</span>
+                <br />
+                <input type="text" @bind-value=@newPassword />
+                <br />
+                <br />
+
+                <span class="newpass">confirm new password</span>
+                <br />
+                <input type="text" @bind-value=@newPasswordConfirm />
+                <br />
+                <br />
+
+                <div class="alert" style="display:@(showError ? "block" : "none")">
+                    <span class="closebtn" @onclick="CloseError">&times;</span>
+                    @errorMessage
+                </div>
+                <div class="alert alert-success" style="display:@(showSuccess ? "block" : "none")">
+                    <span class="closebtn" @onclick="CloseSuccess">&times;</span>
+                    @successMessage
+                </div>
+
+                <button class="savebtn" @onclick=@ChangePassword>save</button>
+
+
             </div>
 
             <div id="containerbody" class="containerbody">
@@ -43,7 +76,7 @@
 
                 <span class="AccountFirstname">First name</span>
                 <span class="AccountLastname">Last name</span>
-                
+
                 <br />
 
                 <span>
@@ -55,13 +88,13 @@
                 <br />
 
                 <span class="AccounUsername">Username</span>
-                <span class="AccountUserID">UserID</span>
+                <span class="AccountUserID">Password</span>
 
                 <br />
 
                 <span>
                     <input type="text" id="Username" class="Username" value="@customer.Username" readonly />
-                    <input type="text" id="UserID" class="UserID" value="@customer.CustomerId" readonly />
+                    <input type="text" id="UserID" class="UserID" value="@UserSession.StringPassword" readonly />
                 </span>
 
                 <br />
@@ -76,6 +109,7 @@
                     <input type="text" id="Email" class="Email" value="@customer.Email" readonly />
                     <input type="text" id="PhoneNum" class="PhoneNum" value="@customer.PhoneNumber" readonly />
                 </span>
+
 
             </div>
         </div>
@@ -99,243 +133,321 @@
 <script>
 
     function ChangePass() {
-        var box = document.getElementById('containerbody');
-        box.style.display = 'none';  // Change display to block to show it
-        var box = document.getElementById('containerchangepass');
-        box.style.display = 'block';  // Change display to block to show it
+    var box = document.getElementById('containerbody');
+    box.style.display = 'none';  // Change display to block to show it
+    var box = document.getElementById('containerchangepass');
+    box.style.display = 'block';  // Change display to block to show it
     }
 
     function ViewProfile(){
-        var box = document.getElementById('containerbody');
-        box.style.display = 'block';  
-                var box = document.getElementById('containerchangepass');
-        box.style.display = 'none';  
+    var box = document.getElementById('containerbody');
+    box.style.display = 'block';  
+    var box = document.getElementById('containerchangepass');
+    box.style.display = 'none';  
+    }
+
+
+    // Get all elements with class="closebtn"
+    var close = document.getElementsByClassName("closebtn");
+    var i;
+
+    // Loop through all close buttons
+    for (i = 0; i < close.length; i++) {
+    // When someone clicks on a close button
+    close[i].onclick = function(){
+
+    // Get the parent of <span class="closebtn"> (<div class="alert">)
+    var div = this.parentElement;
+
+    // Set the opacity of div to 0 (transparent)
+    div.style.opacity = "0";
+
+    // Hide the div after 600ms (the same amount of milliseconds it takes to fade out)
+    setTimeout(function(){ div.style.display = "none"; }, 600);
+    }
     }
 
 </script>
 
 <style>
 
+    .alert {
+        padding: 20px;
+        background-color: #f44336; /* Red */
+        color: white;
+        margin-bottom: 15px;
+    }
+
+    .alert-success {
+        padding: 20px;
+        background-color: #4CAF50; /* Red */
+        color: white;
+        margin-bottom: 15px;
+    }
+
+    /* The close button */
+    .closebtn {
+        margin-left: 15px;
+        color: white;
+        font-weight: bold;
+        float: right;
+        font-size: 22px;
+        line-height: 20px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+        /* When moving the mouse over the close button */
+        .closebtn:hover {
+            color: black;
+        }
 
     .Email {
-        left: -3.5%;
-        position: relative;
+    left: -3.5%;
+    position: relative;
     }
 
     .PhoneNum {
-        left: 4%;
-        position: relative;
+    left: 4%;
+    position: relative;
     }
 
     .AccountEmail {
-        color: black;
-        position: relative;
-        left: -15.5%;
+    color: black;
+    position: relative;
+    left: -15.5%;
     }
 
 
     .AccountPhoneNum {
-        color: black;
-        position: relative;
-        left: 10%;
+    color: black;
+    position: relative;
+    left: 10%;
     }
 
     .Username {
-        left: -3.5%;
-        position: relative;
+    left: -3.5%;
+    position: relative;
     }
 
     .UserID {
-        left: 4%;
-        position: relative;
+    left: 4%;
+    position: relative;
     }
 
     .AccounUsername {
-        color: black;
-        position: relative;
-        left: -17.5%;
+    color: black;
+    position: relative;
+    left: -17.5%;
     }
 
 
     .AccountUserID {
-        color: black;
-        position: relative;
-        left: 4%;
+    color: black;
+    position: relative;
+    left: 4%;
     }
 
 
 
     .firstname{
-        left: -3.5%;
-        position: relative;
+    left: -3.5%;
+    position: relative;
     }
 
     .lastname {
-        left: 4%;
-        position: relative;
+    left: 4%;
+    position: relative;
     }
 
     .AccountFirstname {
-        color: black;
-        position: relative;
-        left: -15.5%;
+    color: black;
+    position: relative;
+    left: -15.5%;
     }
 
 
     .AccountLastname {
-        color: black;
-        position: relative;
-        left: 4%;
+    color: black;
+    position: relative;
+    left: 4%;
     }
 
     input[type=text], select {
-        width: 25%;
-        padding: 12px 20px;
-        margin: 8px 0;
-        display: inline-block;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        box-sizing: border-box;
+    width: 25%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
     }
 
     input[type=password], select {
-        width: 25%;
-        padding: 12px 20px;
-        margin: 8px 0;
-        display: inline-block;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        box-sizing: border-box;
+    width: 25%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
     }
 
     .nav{
-        display: flex;
-        flex-wrap: wrap;
-        padding-left: 0;
-        margin-bottom: 0;
-        list-style: none;
-        max-width: 1000px;
-        width: 30%;
-        flex-direction:column;
-        gap: 16px;
+    display: flex;
+    flex-wrap: wrap;
+    padding-left: 0;
+    margin-bottom: 0;
+    list-style: none;
+    max-width: 1000px;
+    width: 30%;
+    flex-direction:column;
+    gap: 16px;
     }
 
     .body {
-        font-family: Arial, sans-serif;
-        line-height: 1.6;
-        background-color: #f4f4f4;
-        display: flex;
-        flex-direction: column; /* Stack items vertically */
-        min-height: 100vh; /* Full height of the viewport */
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    background-color: #f4f4f4;
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+    min-height: 100vh; /* Full height of the viewport */
     }
 
     .navbtn {
-        flex-shrink: 0;
-        background-color: #333;
-        color: white;
-        padding: 10px;
-        display: flex;
-        justify-content: center;
-        border-radius: 5px;
-        margin-bottom: 5px;
-        display: inline-block;
-        min-width: 85%;
-        width: 85%;
-        height: 20%;
-        max-height: 600px;
-        min-width: 120px;
+    flex-shrink: 0;
+    background-color: #333;
+    color: white;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    display: inline-block;
+    min-width: 85%;
+    width: 85%;
+    height: 20%;
+    max-height: 600px;
+    min-width: 120px;
     }
 
-        navbtn button {
-            color: white;
-            padding: 10px 20px;
-            text-decoration: none;
-            margin: 0 10px;
-            transition: background-color 0.3s;
-             display: flex;
-        }
+    navbtn button {
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    margin: 0 10px;
+    transition: background-color 0.3s;
+    display: flex;
+    }
 
-            navbtn:hover {
-                background-color: #575757;
-            }
+    navbtn:hover {
+    background-color: #575757;
+    }
 
     .navbtn:last-child {
-        margin-bottom: 0; /* Remove margin for the last button */
+    margin-bottom: 0; /* Remove margin for the last button */
     }
     .container {
-        padding: 20px;
-        width: 100%; /* Makes content box smaller */
-        max-width: 1000px; /* Maximum width of the content box */
-        height: 60%;
-        border-radius: 8px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        text-align: center;
-        flex-direction: column; /* Stack items vertically */
-        display: flex;
+    padding: 20px;
+    width: 100%; /* Makes content box smaller */
+    max-width: 1000px; /* Maximum width of the content box */
+    height: 60%;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    flex-direction: column; /* Stack items vertically */
+    display: flex;
     }
 
     .containerbody {
-        background-color: dimgrey;
-        padding: 20px;
-        width: 100%;
-        max-width: 770px;
-        border-radius: 8px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        text-align: center;
-        position: relative;
-        flex-direction: column; /* Stack items vertically */
-        display: block;
-        
+    background-color: dimgrey;
+    padding: 20px;
+    width: 100%;
+    max-width: 770px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    position: relative;
+    flex-direction: column; /* Stack items vertically */
+    display: block;
+
     }
 
     .containerchangepass {
-        background-color: dimgrey;
-        padding: 20px;
-        width: 100%;
-        max-width: 770px;
-        border-radius: 8px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        text-align: center;
-        position: relative;
-        flex-direction: column; /* Stack items vertically */
-        display: none;
+    background-color: dimgrey;
+    padding: 20px;
+    width: 100%;
+    max-width: 770px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    position: relative;
+    flex-direction: column; /* Stack items vertically */
+    display: none;
     }
 
     .btn {
-        width: 20%;
-        background-color: #4CAF50;
-        color: white;
-        padding: 14px 20px;
-        margin: 8px 0;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        position: relative;
-        left: 40%;
+    width: 20%;
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    position: relative;
+    left: 40%;
     }
 
-        .btn:hover {
-            background-color: #45a049;
-        }
+    .btn:hover {
+    background-color: #45a049;
+    }
 
     .header{
-        background-color: dimgrey;
-        color: white;
-        text-align: center;
-        padding: 20px;
-        border-radius: 10px;
-        margin-bottom: 20px;
+    background-color: dimgrey;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
     }
 
+    .savebtn {
+    width: 20%;
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    position: relative;
+    left: 0%;
+    }
+
+    .savebtn:hover {
+    background-color: #45a049;
+    }
+
+
     .containermain{
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
     }
 
 </style>
 
 @code {
+    private string newPassword;
+    private string oldPassword;
+    private string newPasswordConfirm;
+
+    private bool showError = false;
+    private string errorMessage = "";
+    private bool showSuccess = false;
+    private string successMessage = "";
+
     private Customer customer;
     private List<Room> rooms;
 
@@ -384,6 +496,41 @@
         Console.WriteLine(Roomnumber);
         Room = await RoomService.GetRoomAsync(Roomnumber);
         await RoombookingService.AddRoombookingAsync(customer, Room, startDate, Days);
+
+    }
+
+    private async Task ChangePassword()
+    {
+        if (oldPassword == newPassword)
+        {
+            showError = true;
+            errorMessage = "Cant use old password for new password.";
+            StateHasChanged();
+            return;
+        }
+
+
+        if (newPassword == newPasswordConfirm)
+        {
+            string hashedNewPassword = PasswordUtils.HashPassword(newPassword);
+            string hashedOldPassword = PasswordUtils.HashPassword(oldPassword);
+            await CustomerService.ChangePassword(UserSession.UserId, hashedOldPassword, hashedNewPassword);
+            showSuccess = true;
+            successMessage = "Your password has been successfully changed.";
+            StateHasChanged();
+        }
+    }
+
+    private void CloseError()
+    {
+        showError = false;
+        StateHasChanged();  // Forces a re-render after closing
+    }
+
+    private void CloseSuccess()
+    {
+        showError = false;
+        StateHasChanged();  // Forces a re-render after closing
 
     }
 }

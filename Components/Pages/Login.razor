@@ -13,41 +13,51 @@
 
 
 <div class="container">
-  <div>
-    <label>Username</label>
-    <br />
-    <InputText 
+    <div>
+        <label>Username</label>
+        <br />
+        <InputText 
         type="text"
         id="username"
         name="username"
         placeholder="enter username"
         @bind-value="newCustomer.Username" />
 
-    <br />
+        <br />
 
-    <label>Password</label>
-    <br />
-    <InputText type="password"
+        <label>Password</label>
+        <br />
+        <InputText type="password"
         id="password"
         name="password"
         placeholder="enter password"
         @bind-value="password" />
 
-    <br />
+        <br />
 
-    <button @onclick="@HandleValidSubmit" class="btn">Log In</button>
+        <div class="alert" style="display:@(showError ? "block" : "none")">
+            <span class="closebtn" @onclick="CloseError">&times;</span>
+            @errorMessage
+        </div>
+        <div class="alert alert-success" style="display:@(showSuccess ? "block" : "none")">
+            <span class="closebtn" @onclick="CloseSuccess">&times;</span>
+            @successMessage
+        </div>
 
-    <br />
-    <br />
 
-    <a href="/register" target="_self">Dont have an account? Sign up here</a>
+        <button @onclick="@HandleValidSubmit" class="btn">Log In</button>
+
+        <br />
+        <br />
+
+        <a href="/register" target="_self">Dont have an account? Sign up here</a>
 
 
     </div>
 </div>
 
 <script>
-     // Get all elements with class="closebtn"
+    // Get all elements with class="closebtn"
     var close = document.getElementsByClassName("closebtn");
     var i;
 
@@ -71,6 +81,12 @@
 @code {
     private Customer newCustomer = new Customer();
     private string password;
+    private string stringPassword;
+
+    private bool showError = false;
+    private string errorMessage = "";
+    private bool showSuccess = false;
+    private string successMessage = "";
 
 
     #region Hidden
@@ -87,11 +103,9 @@
 
     private async Task HandleValidSubmit()
     {
-        if (string.IsNullOrEmpty(password))
-        {
-            Console.WriteLine("Password is empty");
-            return;
-        }
+        // Transform the password (e.g., hash it, append/prepend text, or any other transformation)
+        stringPassword = $"{password}";
+        UserSession.StringPassword = stringPassword;
 
         newCustomer.Password = PasswordUtils.HashPassword(password);
 
@@ -101,11 +115,14 @@
             return;
         }
 
+
         var customer = await CustomerService.LogIn(newCustomer);
 
         if (customer == null)
         {
-            Console.WriteLine("Log in failed. Customer is null.");
+            showError = true;
+            errorMessage = "Invalid password.";
+            StateHasChanged();
             return;
         }
 
@@ -114,9 +131,53 @@
 
     }
 
+    private void CloseError()
+    {
+        showError = false;
+        StateHasChanged();  // Forces a re-render after closing
+    }
+
+    private void CloseSuccess()
+    {
+        showError = false;
+        StateHasChanged();  // Forces a re-render after closing
+
+    }
+
 }
 
 <style>
+    .alert {
+        padding: 20px;
+        background-color: #f44336; /* Red */
+        color: white;
+        margin-bottom: 15px;
+    }
+
+    .alert-success {
+        padding: 20px;
+        background-color: #4CAF50; /* Red */
+        color: white;
+        margin-bottom: 15px;
+    }
+
+    /* The close button */
+    .closebtn {
+        margin-left: 15px;
+        color: white;
+        font-weight: bold;
+        float: right;
+        font-size: 22px;
+        line-height: 20px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+        /* When moving the mouse over the close button */
+        .closebtn:hover {
+            color: black;
+        }
+
     .container {
         padding: 20px;
         width: 80%; /* Makes content box smaller */
