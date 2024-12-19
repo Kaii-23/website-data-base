@@ -30,6 +30,7 @@
         <div id="containermain" class="containermain">
             <div class="nav">
                 <button onclick="ViewProfile()" class="navbtn">Your profile</button>
+                <button onclick="EditDetails()" class="navbtn">Edit account details</button>
                 <button onclick="ChangePass()" class="navbtn">Change password</button>
             </div>
 
@@ -56,14 +57,19 @@
                 <br />
                 <br />
 
+             
                 <div class="alert" style="display:@(showError ? "block" : "none")">
                     <span class="closebtn" @onclick="CloseError">&times;</span>
                     @errorMessage
                 </div>
+
+
                 <div class="alert alert-success" style="display:@(showSuccess ? "block" : "none")">
                     <span class="closebtn" @onclick="CloseSuccess">&times;</span>
                     @successMessage
                 </div>
+
+                
 
                 <button class="savebtn" @onclick=@ChangePassword>save</button>
 
@@ -112,8 +118,66 @@
 
 
             </div>
-        </div>
 
+            <div id="containerEditDetails" class="containerEditDetails">
+                <h1>Edit your details</h1><br /> 
+
+
+                <span class="AccountFirstname">First name</span>
+                <span class="AccountLastname">Last name</span>
+
+                <br />
+
+                <span>
+                    <input type="text" id="firstname" class="firstname" @bind-value=@newFirstName/>
+                    <input type="text" id="lastname" class="lastname" @bind-value=@newLastName />
+                </span>
+
+                <br />
+                <br />
+
+                <span class="AccounUsername">Username</span>
+                <span class="AccountUserID">Password</span>
+
+                <br />
+
+                <span>
+                    <input type="text" id="Username" class="Username" @bind-value=@newUsername/>
+                    <input type="text" id="UserID" class="UserID" value="@UserSession.StringPassword" readonly />
+                </span>
+
+                <br />
+                <br />
+
+                <span class="AccountEmail">Email</span>
+                <span class="AccountPhoneNum">Phone Number</span>
+
+                <br />
+
+                <span>
+                    <input type="text" id="Email" class="Email" @bind-value=@newEmail/>
+                    <input type="text" id="PhoneNum" class="PhoneNum" @bind-value=@newPhoneNum/>
+                </span>
+
+                <br />
+                <br />
+
+
+                <div class="alert" id="test" style="display:@(showError ? "block" : "none")">
+                    <span class="closebtn" @onclick="CloseError">&times;</span>
+                    @errorMessage
+                </div>
+
+
+                <div class="alert alert-success" id="test" style="display:@(showSuccess ? "block" : "none")">
+                    <span class="closebtn" @onclick="CloseSuccess">&times;</span>
+                    @successMessage
+                </div>
+
+
+                <button class="Editbtn" @onclick="@ConfirmEditDetails">save</button>
+            </div>
+        </div>
 
     </div>
 
@@ -128,6 +192,8 @@
 
 <br />
 
+
+
 <button @onclick=Logout class="btn">Log Out</button>
 
 <script>
@@ -137,6 +203,10 @@
     box.style.display = 'none';  // Change display to block to show it
     var box = document.getElementById('containerchangepass');
     box.style.display = 'block';  // Change display to block to show it
+    var box = document.getElementById('containerEditDetails');
+    box.style.display = 'none';
+     var box = document.getElementById('test');
+    box.style.display = 'none';
     }
 
     function ViewProfile(){
@@ -144,6 +214,22 @@
     box.style.display = 'block';  
     var box = document.getElementById('containerchangepass');
     box.style.display = 'none';  
+    var box = document.getElementById('containerEditDetails');
+    box.style.display = 'none';
+    var box = document.getElementById('test');
+    box.style.display = 'none';
+    }
+
+    function EditDetails(){
+    var box = document.getElementById('containerbody');
+    box.style.display = 'none';
+    var box = document.getElementById('containerchangepass');
+    box.style.display = 'none';
+    var box = document.getElementById('containerEditDetails');
+    box.style.display = 'block';
+      var box = document.getElementById('test');
+    box.style.display = 'none';
+
     }
 
 
@@ -172,35 +258,35 @@
 <style>
 
     .alert {
-        padding: 20px;
-        background-color: #f44336; /* Red */
-        color: white;
-        margin-bottom: 15px;
+    padding: 20px;
+    background-color: #f44336; /* Red */
+    color: white;
+    margin-bottom: 15px;
     }
 
     .alert-success {
-        padding: 20px;
-        background-color: #4CAF50; /* Red */
-        color: white;
-        margin-bottom: 15px;
+    padding: 20px;
+    background-color: #4CAF50; /* Red */
+    color: white;
+    margin-bottom: 15px;
     }
 
     /* The close button */
     .closebtn {
-        margin-left: 15px;
-        color: white;
-        font-weight: bold;
-        float: right;
-        font-size: 22px;
-        line-height: 20px;
-        cursor: pointer;
-        transition: 0.3s;
+    margin-left: 15px;
+    color: white;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
     }
 
-        /* When moving the mouse over the close button */
-        .closebtn:hover {
-            color: black;
-        }
+    /* When moving the mouse over the close button */
+    .closebtn:hover {
+    color: black;
+    }
 
     .Email {
     left: -3.5%;
@@ -386,6 +472,19 @@
     display: none;
     }
 
+    .containerEditDetails {
+    background-color: dimgrey;
+    padding: 20px;
+    width: 100%;
+    max-width: 770px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    position: relative;
+    flex-direction: column; /* Stack items vertically */
+    display: none;
+    }
+
     .btn {
     width: 20%;
     background-color: #4CAF50;
@@ -400,6 +499,23 @@
     }
 
     .btn:hover {
+    background-color: #45a049;
+    }
+
+    .Editbtn {
+    width: 20%;
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    position: relative;
+    left: 0%;
+    }
+
+    .Editbtn:hover {
     background-color: #45a049;
     }
 
@@ -439,6 +555,15 @@
 </style>
 
 @code {
+
+    private string newFirstName;
+    private string newLastName;
+
+    private string newUsername;
+
+    private string newEmail;
+    private string newPhoneNum;
+
     private string newPassword;
     private string oldPassword;
     private string newPasswordConfirm;
@@ -521,16 +646,60 @@
         }
     }
 
+
+
+    private async Task ConfirmEditDetails()
+    {
+        Customer thisCustomer = await CustomerService.GetCustomerFromId(UserSession.UserId);
+        if (newFirstName != null)
+        {
+            thisCustomer.FirstName = newFirstName;
+
+        }
+
+        if (newLastName != null)
+        {
+            thisCustomer.LastName = newLastName;
+        }
+
+        if (newUsername != null)
+        {
+            thisCustomer.Username = newUsername;
+        }
+
+        if (newEmail != null)
+        {
+            thisCustomer.Email = newEmail;
+        }
+
+        if (newPhoneNum != null)
+        {
+            thisCustomer.PhoneNumber = newPhoneNum;
+        }
+
+
+        await CustomerService.updateCustomer(thisCustomer);
+
+        showSuccess = true;
+        successMessage = "Your changes has been saved.";
+        StateHasChanged();
+        
+    }
+
     private void CloseError()
     {
         showError = false;
         StateHasChanged();  // Forces a re-render after closing
+        return;
+
     }
 
     private void CloseSuccess()
     {
         showError = false;
         StateHasChanged();  // Forces a re-render after closing
+       
+
 
     }
 }

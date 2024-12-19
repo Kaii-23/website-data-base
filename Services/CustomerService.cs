@@ -35,10 +35,28 @@ namespace website2.Services
             }
         }
 
+
         public async Task<bool> DoesUsernameExistsAsync(string username)
         {
             var result = await _context.Customers.FirstOrDefaultAsync(c => c.Username == username);
             return result != null;
+        }
+
+        public async Task<Customer> GetCustomerFromId(int customerId)
+        {
+            return await _context.Customers.SingleOrDefaultAsync(c => c.CustomerId == customerId);
+        }
+        public async Task updateCustomer(Customer customer)
+        {
+            Customer thisCustomer = await GetCustomerFromId((int)customer.CustomerId);
+            thisCustomer.FirstName = customer.FirstName;
+            thisCustomer.LastName = customer.LastName;
+            thisCustomer.Username = customer.Username;
+            thisCustomer.Email = customer.Email;
+            thisCustomer.PhoneNumber = customer.PhoneNumber;
+
+
+            await _context.SaveChangesAsync();
         }
         #region hidden
         public async Task<List<Customer>> GetCustomersAsync()
