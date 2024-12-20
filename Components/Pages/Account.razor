@@ -12,10 +12,9 @@
 
 @page "/account"
 
-<h3>Account</h3>
+<h3 class="title">Your Account
 
-<button @onclick="ShowUserId">Show User ID</button>
-<br />
+</h3>
 
 @if (customer != null)
 
@@ -24,7 +23,7 @@
     <div class="container">
 
         <div class="header">
-            <a>Hello, @customer.FirstName @customer.LastName</a>
+            <a class="greeting">Hello, @customer.FirstName @customer.LastName</a>
         </div>
 
         <div id="containermain" class="containermain">
@@ -32,6 +31,7 @@
                 <button onclick="ViewProfile()" class="navbtn">Your profile</button>
                 <button onclick="EditDetails()" class="navbtn">Edit account details</button>
                 <button onclick="ChangePass()" class="navbtn">Change password</button>
+                <button onclick="ViewBookings()" class="navbtn">View your bookings</button>
             </div>
 
             <div id="containerchangepass" class="containerchangepass">
@@ -174,12 +174,17 @@
                     @successMessage
                 </div>
 
-
                 <button class="Editbtn" @onclick="@ConfirmEditDetails">save</button>
-            </div>
-        </div>
 
-    </div>
+                </div>
+            </div>
+
+            <div id="containerBookings" class="containerBookings">
+
+            </div>
+      </div>
+
+    
 
 
 }
@@ -205,7 +210,10 @@
     box.style.display = 'block';  // Change display to block to show it
     var box = document.getElementById('containerEditDetails');
     box.style.display = 'none';
-     var box = document.getElementById('test');
+    var box = document.getElementById('test');
+    box.style.display = 'none';
+
+    var box = document.getElementById('containterBookings');
     box.style.display = 'none';
     }
 
@@ -218,6 +226,9 @@
     box.style.display = 'none';
     var box = document.getElementById('test');
     box.style.display = 'none';
+
+     var box = document.getElementById('containterBookings');
+    box.style.display = 'none';
     }
 
     function EditDetails(){
@@ -227,8 +238,24 @@
     box.style.display = 'none';
     var box = document.getElementById('containerEditDetails');
     box.style.display = 'block';
-      var box = document.getElementById('test');
+    var box = document.getElementById('test');
     box.style.display = 'none';
+        
+    var box = document.getElementById('containterBookings');
+    box.style.display = 'none';
+    }
+
+   function ViewBookings(){
+    var box = document.getElementById('containerbody');
+    box.style.display = 'none';
+    var box = document.getElementById('containerchangepass');
+    box.style.display = 'none';
+    var box = document.getElementById('containerEditDetails');
+    box.style.display = 'none';
+    var box = document.getElementById('test');
+    box.style.display = 'none';
+    var box = document.getElementById('containterBookings');
+     box.style.display = 'block';
 
     }
 
@@ -256,6 +283,19 @@
 </script>
 
 <style>
+    .span{
+        font-family: DejaVu Sans Mono, monospace;
+    }
+    
+    .greeting{
+        color: black
+    }
+
+    .title {
+        font-weight: bold;
+        left: 45%;
+        position: relative;
+    }
 
     .alert {
     padding: 20px;
@@ -402,7 +442,7 @@
 
     .navbtn {
     flex-shrink: 0;
-    background-color: #333;
+    background-color: black;
     color: white;
     padding: 10px;
     display: flex;
@@ -417,6 +457,11 @@
     min-width: 120px;
     }
 
+    .navbtn:hover{
+            background-color: #333333;
+            color: white;
+    }
+
     navbtn button {
     color: white;
     padding: 10px 20px;
@@ -426,13 +471,10 @@
     display: flex;
     }
 
-    navbtn:hover {
-    background-color: #575757;
-    }
-
     .navbtn:last-child {
     margin-bottom: 0; /* Remove margin for the last button */
     }
+
     .container {
     padding: 20px;
     width: 100%; /* Makes content box smaller */
@@ -443,10 +485,11 @@
     text-align: center;
     flex-direction: column; /* Stack items vertically */
     display: flex;
+        border: 0.2rem solid lightgrey;
     }
 
     .containerbody {
-    background-color: dimgrey;
+        background-color: #f2f2f2;
     padding: 20px;
     width: 100%;
     max-width: 770px;
@@ -460,7 +503,7 @@
     }
 
     .containerchangepass {
-    background-color: dimgrey;
+        background-color: #f2f2f2;
     padding: 20px;
     width: 100%;
     max-width: 770px;
@@ -473,7 +516,21 @@
     }
 
     .containerEditDetails {
-    background-color: dimgrey;
+        background-color: #f2f2f2;
+    padding: 20px;
+    width: 100%;
+    max-width: 770px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    position: relative;
+    flex-direction: column; /* Stack items vertically */
+    display: none;
+    }
+
+
+    .containterBookings {
+    background-color: #f2f2f2;
     padding: 20px;
     width: 100%;
     max-width: 770px;
@@ -487,7 +544,7 @@
 
     .btn {
     width: 20%;
-    background-color: #4CAF50;
+    background-color: black;
     color: white;
     padding: 14px 20px;
     margin: 8px 0;
@@ -499,12 +556,13 @@
     }
 
     .btn:hover {
-    background-color: #45a049;
+            background-color: #333333;
+            color: white;
     }
 
     .Editbtn {
     width: 20%;
-    background-color: #4CAF50;
+    background-color: black;
     color: white;
     padding: 14px 20px;
     margin: 8px 0;
@@ -516,11 +574,13 @@
     }
 
     .Editbtn:hover {
-    background-color: #45a049;
+            background-color: #333333;
+            color: white;
     }
 
+
     .header{
-    background-color: dimgrey;
+        background-color: #f2f2f2;
     color: white;
     text-align: center;
     padding: 20px;
@@ -530,7 +590,7 @@
 
     .savebtn {
     width: 20%;
-    background-color: #4CAF50;
+    background-color: black;
     color: white;
     padding: 14px 20px;
     margin: 8px 0;
@@ -542,7 +602,8 @@
     }
 
     .savebtn:hover {
-    background-color: #45a049;
+            background-color: #333333;
+            color: white;
     }
 
 
@@ -604,7 +665,7 @@
     private async Task Logout()
     {
         UserSession.UserId = 0;
-        NavigationManager.NavigateTo("/");
+        NavigationManager.NavigateTo("/login");
     }
 
     private async Task Testbox()
@@ -676,14 +737,15 @@
         {
             thisCustomer.PhoneNumber = newPhoneNum;
         }
+        else
+        {
+            await CustomerService.updateCustomer(thisCustomer);
 
-
-        await CustomerService.updateCustomer(thisCustomer);
-
+        }
         showSuccess = true;
         successMessage = "Your changes has been saved.";
         StateHasChanged();
-        
+
     }
 
     private void CloseError()
@@ -696,7 +758,7 @@
 
     private void CloseSuccess()
     {
-        showError = false;
+        showSuccess = false;
         StateHasChanged();  // Forces a re-render after closing
        
 
